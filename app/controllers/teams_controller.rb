@@ -17,4 +17,11 @@ class TeamsController < ApplicationController
     }
     render json: response, response: 200
   end
+
+  def players
+    team = Team.find(params[:id])
+    players = team.players
+    render json: players, response: 200
+  end
+
 end
