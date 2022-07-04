@@ -6,6 +6,15 @@ class TeamsController < ApplicationController
 
   def show
     team = Team.find(params[:id])
-    render json: team, response: 200
+    players = team.players
+    team.players = players
+    response = {
+      id: team.id,
+      name: team.name,
+      division: team.division,
+      points: team.points,
+      players: players
+    }
+    render json: response, response: 200
   end
 end
