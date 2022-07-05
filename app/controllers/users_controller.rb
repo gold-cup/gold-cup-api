@@ -1,3 +1,5 @@
+require 'jwt'
+
 class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
@@ -9,9 +11,12 @@ class UsersController < ApplicationController
   end
 
   def login
+    puts ENV['APP_SECRET']
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      render json: user, status: :ok
+      payload = { user_id: user.id }
+      token = JWT.encode payload, ENV['APP_SECRET'], 'HS256'
+      render json: {**user.attributes, token: token}, status: :ok
     else
       render json: { error: 'Invalid username or password' }, status: :unauthorized
     end

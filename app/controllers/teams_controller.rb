@@ -8,14 +8,7 @@ class TeamsController < ApplicationController
     team = Team.find(params[:id])
     players = team.players
     team.players = players
-    response = {
-      id: team.id,
-      name: team.name,
-      division: team.division,
-      points: team.points,
-      players: players
-    }
-    render json: response, response: 200
+    render json: {**team.attributes, players: players}, response: 200
   end
 
   def create
