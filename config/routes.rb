@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "/teams/:id/players" => "teams#players"
 
   post "/teams" => "teams#create"
+  post "/login" => "users#login"
 
   put "/teams/:id" => "teams#update"
 end
