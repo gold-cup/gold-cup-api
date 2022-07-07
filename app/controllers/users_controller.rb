@@ -15,14 +15,9 @@ class UsersController < ApplicationController
   def show
     begin
       user_id_from_token = decode_token(request)["user_id"]
-      puts user_id_from_token
-      if user_id_from_token == params[:id].to_i
-        user = User.find(params[:id])
-        render json: filter_response(user), response: 200
-      else
-        render json: {error: 'You must be logged in to view this user'}, response: 401
-      end
-    rescue JWT::VerificationError, JWT::DecodeError
+      user = User.find(user_id_from_token)
+      render json: filter_response(user), response: 200
+    rescue JWT::VerificationError
       render json: {error: 'failed to decode token'}, resposne: 401
     end
   end
@@ -49,8 +44,8 @@ class UsersController < ApplicationController
   end
 
   def decode_token(request)
-    token = request.headers['Authorization'].split(' ').last
     begin
+      token = request.headers['Authorization'].split(' ').last
       decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')
       payload = decoded_token[0]
       payload
