@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class PlayersController < ApplicationController
   def index
     players = Player.all
-    responseArr = players.map {
-      |player| generate_player_response(player)
-    }
+    responseArr = players.map do |player|
+      generate_player_response(player)
+    end
     render json: responseArr, status: 200
   end
 
@@ -14,7 +16,8 @@ class PlayersController < ApplicationController
   end
 
   private
+
   def generate_player_response(player)
-    {**player.attributes, team: player.team}
+    { **player.attributes, team: player.team }
   end
 end
