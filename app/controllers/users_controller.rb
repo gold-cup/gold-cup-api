@@ -18,12 +18,12 @@ class UsersController < ApplicationController
       puts user_id_from_token
       if user_id_from_token == params[:id].to_i
         user = User.find(params[:id])
-        render json: filter_response(user), status: :ok
+        render json: filter_response(user), response: 200
       else
-        render json: {error: 'You must be logged in to view this user'}, status: :unauthorized
+        render json: {error: 'You must be logged in to view this user'}, response: 401
       end
     rescue JWT::VerificationError, JWT::DecodeError
-      render json: {error: 'failed to decode token'}, status: :unauthorized
+      render json: {error: 'failed to decode token'}, resposne: 401
     end
   end
 
@@ -31,10 +31,10 @@ class UsersController < ApplicationController
   def login
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      generate_token(user)
-      render json: {**user.attributes, token: token}, status: :ok
+      token = generate_token(user)
+      render json: {**user.attributes, token: token}, response: 200
     else
-      render json: { error: 'Invalid username or password' }, status: :unauthorized
+      render json: { error: 'Invalid username or password' }, response: 401
     end
   end
 
