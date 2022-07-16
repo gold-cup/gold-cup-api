@@ -30,6 +30,12 @@ class PeopleController < ApplicationController
     end
   end
 
+  def show
+    check_if_user_owns_person
+    person = Person.find(params[:id])
+    render json: person, status: 200
+  end
+
   private
 
   def person_params
