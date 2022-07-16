@@ -59,8 +59,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
     t.index ["user_id"], name: "index_people_on_user_id"
   end
 
-  create_table "players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
+  create_table "players", force: :cascade do |t|
     t.integer "number"
     t.string "position"
     t.bigint "team_id", null: false
