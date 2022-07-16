@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def personal_details
+  def index
     begin
       user_id_from_token = decode_token(request)["user_id"]
       user = User.find(user_id_from_token)

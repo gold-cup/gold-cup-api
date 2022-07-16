@@ -66,6 +66,9 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
     t.bigint "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "division"
+    t.integer "person_id", null: false
+    t.index ["person_id"], name: "index_players_on_person_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
@@ -92,6 +95,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "people", "users"
+  add_foreign_key "players", "people"
   add_foreign_key "players", "teams"
   add_foreign_key "teams", "users", column: "manager_id"
 end
