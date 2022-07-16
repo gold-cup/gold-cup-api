@@ -16,9 +16,22 @@ class CoachesController < ApplicationController
     render json: response, status: 200
   end
 
-  private
+  def create
+    check_if_user_owns_person(request, params[:person_id])
+    coach = Coach.new(coach_params)
+    if (coach.save)
+      render json: generate_coach_response(coach), status: 201
+    else
+      render json: {errors: coach.errors}, response: 422
+    end
+  end
 
-  def generate_coach_response
+  private
+  def coach_params
+    params.permit(:team_id, :person_id)
+  end
+
+  def generate_coach_response(coach)
     { **coach.attributes.except("person_id", "team_id"), team: coach.team, person: coach.person }
   end
 end
