@@ -19,6 +19,17 @@ class PeopleController < ApplicationController
     end
   end
 
+  def destroy
+    check_if_user_owns_person
+    person = Person.find(params[:id])
+    destroyed_person = person.destroy
+    if destroyed_person.destroyed?
+      render json: {message: "Person removed"}, status: 200
+    else
+      render json: {errors: person.errors}, response: 422
+    end
+  end
+
   private
 
   def person_params
