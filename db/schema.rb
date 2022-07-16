@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2022_07_31_025747) do
     t.integer "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status"
     t.index ["person_id"], name: "index_coaches_on_person_id"
     t.index ["team_id"], name: "index_coaches_on_team_id"
   end
