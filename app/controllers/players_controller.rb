@@ -34,11 +34,21 @@ class PlayersController < ApplicationController
     render json: response, status: 200
   end
 
+  def update
+    check_if_user_owns_person(request, params[:id])
+    person = Person.find(params[:id])
+    player = person.players.find(params[:player_id])
+    if (player.update(player_params))
+      render json: generate_player_response(player), status: 200
+    else
+      render json: {errors: player.errors}, response: 422
+    end
+  end
 
   private
 
   def generate_player_response(player)
-    { **player.attributes, team: player.team, person: player.person }
+    { **player.attributes.except("person_id", "team_id"), team: player.team, person: player.person }
   end
 
   def player_params
