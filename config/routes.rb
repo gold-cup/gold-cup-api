@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get "/teams/:id/players" => "teams#players"
   get "/user" => "users#show"
   get "/people" => "users#personal_details"
+  get "/person" => "users#index"
+  get "/person/:id/players/:player_id" => "players#show"
   get "/person/:id" => "people#show"
   get "/files/get" => "files#get_file"
   get "/teams" => "user#get_teams"

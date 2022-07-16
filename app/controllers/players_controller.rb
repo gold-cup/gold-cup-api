@@ -26,6 +26,15 @@ class PlayersController < ApplicationController
     end
   end
 
+  def show
+    check_if_user_owns_person(request, params[:id])
+    person = Person.find(params[:id])
+    player = person.players.find(params[:player_id])
+    response = generate_player_response(player)
+    render json: response, status: 200
+  end
+
+
   private
 
   def generate_player_response(player)
