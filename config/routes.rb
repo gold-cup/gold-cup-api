@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/person/:id/players" => "players#index"
   get "/players" => "users#get_all_players"
   get "/person/:id/coaches" => "coaches#index"
+  get "/person/:id/coaches/:coach_id" => "coaches#show"
 
   post "/team/new" => "teams#create"
   post "/login" => "users#login"

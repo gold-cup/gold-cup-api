@@ -8,6 +8,14 @@ class CoachesController < ApplicationController
     render json: responseArr, status: 200
   end
 
+  def show
+    check_if_user_owns_person(request, params[:id])
+    person = Person.find(params[:id])
+    coach = person.coaches.find(params[:coach_id])
+    response = generate_coach_response(coach)
+    render json: response, status: 200
+  end
+
   private
 
   def generate_coach_response
