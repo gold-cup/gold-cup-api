@@ -9,6 +9,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  def update
+    check_if_user_owns_person
+    person = Person.find(params[:id])
+    if (person.update(person_params))
+      render json: person, status: 200
+    else
+      render json: {errors: person.errors}, response: 422
+    end
+  end
+
   private
 
   def person_params
@@ -23,6 +33,14 @@ class PeopleController < ApplicationController
       payload
     rescue JWT::DecodeError
       puts "Invalid token"
+    end
+  end
+
+  def check_if_user_owns_person
+    user_id = decode_token(request)["user_id"]
+    person = Person.find(params[:id])
+    if (person.user_id != user_id)
+      render json: {error: "You don't have permission to do that"}, status: 401
     end
   end
 end
