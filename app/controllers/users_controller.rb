@@ -80,17 +80,6 @@ class UsersController < ApplicationController
     token = JWT.encode payload, ENV['APP_SECRET'], 'HS256'
   end
 
-  def decode_token(request)
-    begin
-      token = request.headers['Authorization'].split(' ').last
-      decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')
-      payload = decoded_token[0]
-      payload
-    rescue JWT::DecodeError
-      puts "Invalid token"
-    end
-  end
-
   def filter_response(user)
     user.attributes.except("password_digest")
   end
