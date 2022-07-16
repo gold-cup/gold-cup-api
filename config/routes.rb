@@ -28,4 +28,5 @@ Rails.application.routes.draw do
 
   delete "/person/:id" => "people#destroy"
   delete "/team/:id" => "teams#destroy"
+  delete "/person/:id/players/:player_id" => "players#destroy"
 end

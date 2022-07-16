@@ -45,6 +45,18 @@ class PlayersController < ApplicationController
     end
   end
 
+  def destroy
+    check_if_user_owns_person(request, params[:id])
+    person = Person.find(params[:id])
+    player = person.players.find(params[:player_id])
+    destroyed_player = player.destroy
+    if destroyed_player.destroyed?
+      render json: {message: "Player removed"}, status: 200
+    else
+      render json: {errors: player.errors}, response: 422
+    end
+  end
+
   private
 
   def generate_player_response(player)
