@@ -11,7 +11,7 @@ class PeopleController < ApplicationController
   end
 
   def update
-    check_if_user_owns_person
+    check_if_user_owns_person(request, params[:id])
     person = Person.find(params[:id])
     if (person.update(person_params))
       render json: person, status: 200
@@ -21,7 +21,7 @@ class PeopleController < ApplicationController
   end
 
   def destroy
-    check_if_user_owns_person
+    check_if_user_owns_person(request, params[:id])
     person = Person.find(params[:id])
     destroyed_person = person.destroy
     if destroyed_person.destroyed?
@@ -32,7 +32,7 @@ class PeopleController < ApplicationController
   end
 
   def show
-    check_if_user_owns_person
+    check_if_user_owns_person(request, params[:id])
     person = Person.find(params[:id])
     render json: person, status: 200
   end

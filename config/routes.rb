@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get "/teams" => "teams#index"
   get "/teams/:id" => "teams#show"
-  get "/players" => "players#index"
   get "/players/:id" => "players#show"
   get "/teams/:id/players" => "teams#players"
   get "/user" => "users#show"
@@ -10,6 +9,7 @@ Rails.application.routes.draw do
   get "/person/:id" => "people#show"
   get "/files/get" => "files#get_file"
   get "/teams" => "user#get_teams"
+  get "/person/:id/players" => "players#index"
 
   post "/team/new" => "teams#create"
   post "/login" => "users#login"
@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   post "/person/new" => "people#create"
   post "/files/token" => "files#create_token"
   post "/user/request_team_manager_permissions" => "users#request_team_manager_permissions"
+  post '/players/new' => 'players#create'
 
   put "/teams/:id" => "teams#update"
   put "/give_team_manager_permission" => "users#give_team_manager_permission"

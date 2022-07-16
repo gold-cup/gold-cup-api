@@ -17,9 +17,9 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def check_if_user_owns_person
+  def check_if_user_owns_person(request, person_id)
     user_id = decode_token(request)["user_id"]
-    person = Person.find(params[:id])
+    person = Person.find(person_id)
     if (person.user_id != user_id)
       render json: {error: "You don't have permission to do that"}, status: 401
     end
