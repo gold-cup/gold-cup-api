@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_05_024229) do
+ActiveRecord::Schema.define(version: 2022_07_16_004204) do
+
+  create_table "people", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_name"
+    t.date "birthday"
+    t.string "email"
+    t.string "gender"
+    t.string "city"
+    t.string "province"
+    t.string "country"
+    t.string "phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id", null: false
+    t.string "status"
+    t.index ["user_id"], name: "index_people_on_user_id"
+  end
 
   create_table "players", force: :cascade do |t|
     t.string "name"
@@ -36,7 +54,9 @@ ActiveRecord::Schema.define(version: 2022_07_05_024229) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "permission", default: "user"
   end
 
+  add_foreign_key "people", "users"
   add_foreign_key "players", "teams"
 end

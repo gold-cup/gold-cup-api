@@ -1,5 +1,6 @@
 class Person < ApplicationRecord
   GENDERS = ["male", "female"]
+  STATUSES = ["pending", "approved", "needs_changes"]
   belongs_to :user
 
   validates :first_name, presence: true
@@ -18,5 +19,7 @@ class Person < ApplicationRecord
     in: GENDERS
   }
 
-
+  validates :status, inclusion: {
+    in: STATUSES
+  }
 end
