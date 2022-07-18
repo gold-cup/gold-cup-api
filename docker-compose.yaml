@@ -1,0 +1,38 @@
+version: '3'
+networks:
+  development:
+volumes:
+  db_data:
+  shared_data:
+services:
+  goldcup_db:
+    image: mariadb:10
+    container_name: mariadb-goldcup
+    restart: unless-stopped
+    networks:
+      - development
+    environment:
+      - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_DATABASE=goldcup
+      - MARIADB_USER=goldcup
+      - MARIADB_PASSWORD=goldcup
+    ports:
+      - 3306:3306
+  
+  goldcup_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goldcup_api
+    restart: unless-stopped
+    depends_on:
+      - goldcup_db
+    volumes:
+      - shared_data:/var/shared
+    networks:
+      - development
+    ports:
+      - 3000:3000
+    env_file: .env.development
+    
+    
