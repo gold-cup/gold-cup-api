@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   put "/give_team_manager_permission" => "users#give_team_manager_permission"
   put "/person/:id" => "people#update"
   put "/person/:id/players/:player_id" => "players#update"
+  put "/person/:id/coaches/:coach_id" => "coaches#update"
 
   delete "/person/:id" => "people#destroy"
   delete "/team/:id" => "teams#destroy"

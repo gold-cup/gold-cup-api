@@ -26,9 +26,21 @@ class CoachesController < ApplicationController
     end
   end
 
+  def update
+    # byebug
+    check_if_user_owns_person(request, params[:id])
+    person = Person.find(params[:id])
+    coach = person.coaches.find(params[:coach_id])
+    if (coach.update(coach_params))
+      render json: generate_coach_response(coach), status: 200
+    else
+      render json: {errors: coach.errors}, response: 422
+    end
+  end
+
   private
   def coach_params
-    params.permit(:team_id, :person_id)
+    params.require(:coach).permit(:team_id, :person_id)
   end
 
   def generate_coach_response(coach)
