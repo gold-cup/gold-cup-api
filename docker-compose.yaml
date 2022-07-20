@@ -6,19 +6,19 @@ volumes:
   shared_data:
 services:
   goldcup_db:
-    image: mariadb:10
-    container_name: mariadb-goldcup
+    image: mysql:8-debian
+    container_name: mysql-goldcup
     restart: unless-stopped
     networks:
       - development
     environment:
-      - MARIADB_ROOT_PASSWORD=password
-      - MARIADB_DATABASE=goldcup
-      - MARIADB_USER=goldcup
-      - MARIADB_PASSWORD=goldcup
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=goldcup
+      - MYSQL_USER=goldcup
+      - MYSQL_PASSWORD=goldcup
     ports:
       - 3306:3306
-  
+
   goldcup_api:
     build:
       context: .

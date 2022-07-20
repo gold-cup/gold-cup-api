@@ -4,7 +4,7 @@ RUN apk -U add --no-cache \
     build-base \
     git \
     postgresql-dev postgresql-client \
-    mariadb-dev \
+    mariadb-dev mariadb-client \
     libxml2-dev \
     libxslt-dev \
     nodejs \
@@ -17,8 +17,10 @@ RUN apk -U add --no-cache \
 
 WORKDIR /app
 COPY . /app
+RUN chmod +x ./entrypoint.sh
+
+ENV PORT=3000
 
 RUN bundle install
 
-# ENTRYPOINT ["/bin/bash"]
-CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+ENTRYPOINT [ "./entrypoint.sh" ]
