@@ -2,6 +2,9 @@ class Person < ApplicationRecord
   GENDERS = ["male", "female"]
   STATUSES = ["pending", "approved", "needs_changes"]
   belongs_to :user
+  has_one_attached :waiver, dependent: :destroy
+  has_one_attached :photo, dependent: :destroy
+  has_one_attached :gov_id, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true

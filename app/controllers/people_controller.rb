@@ -39,7 +39,21 @@ class PeopleController < ApplicationController
   private
 
   def person_params
-    params.permit(:first_name, :last_name, :middle_name,:city, :province, :country, :email, :birthday, :gender, :phone_number)
+    params.permit(
+      :first_name,
+      :last_name,
+      :middle_name,
+      :city,
+      :province,
+      :country,
+      :email,
+      :birthday,
+      :gender,
+      :phone_number,
+      :waiver,
+      :photo,
+      :gov_id,
+    )
   end
 
   def decode_token(request)
