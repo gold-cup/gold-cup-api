@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "/players/:id" => "players#show"
   get "/teams/:id/players" => "teams#players"
   get "/user" => "users#show"
-  get "/personal-details" => "users#personal_details"
+  get "/people" => "users#personal_details"
   get "/person/:id" => "people#show"
   get "/person/:id/files" => "people#files"
 

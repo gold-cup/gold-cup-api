@@ -95,6 +95,7 @@ class PeopleController < ApplicationController
     person = Person.find(params[:id])
     if (person.user_id != user_id)
       render json: {error: "You don't have permission to do that"}, status: 401
+      return
     end
   end
 end
