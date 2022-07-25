@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Wait for db to be ready before running migrations"
 
@@ -10,13 +10,13 @@ do
     echo "Running test $count"
     /usr/bin/mysql -h $DATABASE_HOST -P $DATABASE_PORT -u $DATABASE_USERNAME --password=$DATABASE_PASSWORD -e '\q'
     return_code=$?
-    if [[ $return_code -eq 0 ]]; then
+    if [ $return_code -eq 0 ]; then
         echo "Database is ready to run migrations"
         break
     else
         echo "Could not connect to database - (return code $return_code)"
     fi
-    if [[ $count -ge 10 ]]; then
+    if [ $count -ge 10 ]; then
         echo "exceeded execution....exiting"
         break
         exit 1

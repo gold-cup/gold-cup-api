@@ -9,6 +9,7 @@ services:
     image: mysql:8-debian
     container_name: mysql-goldcup
     restart: unless-stopped
+    platform: linux/amd64
     networks:
       - development
     environment:
