@@ -71,6 +71,7 @@ class PeopleController < ApplicationController
       :waiver,
       :photo,
       :gov_id,
+      :parent_email
     )
   end
 
