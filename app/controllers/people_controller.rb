@@ -37,7 +37,7 @@ class PeopleController < ApplicationController
   end
 
   def files
-    check_if_user_owns_person
+    check_if_user_owns_person_cookie
     type = params[:type]
     person = Person.find(params[:id])
     if type == 'waiver'
@@ -75,9 +75,9 @@ class PeopleController < ApplicationController
     )
   end
 
-  def decode_token(request)
+  def decode_token(token)
     begin
-      encoded_token = request.headers["Authorization"]
+      encoded_token = token
       if (encoded_token)
         token = encoded_token.split(' ').last
         decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')
@@ -92,11 +92,21 @@ class PeopleController < ApplicationController
   end
 
   def check_if_user_owns_person
-    user_id = decode_token(request)["user_id"]
+    token_from_request = request.headers["Authorization"]
+    user_id = decode_token(token_from_request)["user_id"]
     person = Person.find(params[:id])
     if (person.user_id != user_id)
       render json: {error: "You don't have permission to do that"}, status: 401
       return
     end
   end
+
+  def check_if_user_owns_person_cookie
+    token_from_cookie = cookies[:token]
+    user_id = decode_token(token_from_request)["user_id"]
+    person = Person.find(params[:id])
+    if (person.user_id != user_id)
+      render json: {error: "You don't have permission to do that"}, status: 401
+      return
+    end
 end
