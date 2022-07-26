@@ -6,10 +6,18 @@ Rails.application.routes.draw do
   get "/players/:id" => "players#show"
   get "/teams/:id/players" => "teams#players"
   get "/user" => "users#show"
+  get "/people" => "users#personal_details"
+  get "/person/:id" => "people#show"
+  get "/person/:id/files" => "people#files"
 
   post "/teams" => "teams#create"
   post "/login" => "users#login"
   post "/register" => "users#create"
+  post "/person/new" => "people#create"
 
   put "/teams/:id" => "teams#update"
+  put "/give_team_manager_permission" => "users#give_team_manager_permission"
+  put "/person/:id" => "people#update"
+
+  delete "/person/:id" => "people#destroy"
 end
