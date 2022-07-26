@@ -8,13 +8,13 @@ Rails.application.routes.draw do
   get "/user" => "users#show"
   get "/people" => "users#personal_details"
   get "/person/:id" => "people#show"
-  get "/files/token" => "files#create_token"
   get "/files/get" => "files#get_file"
 
   post "/teams" => "teams#create"
   post "/login" => "users#login"
   post "/register" => "users#create"
   post "/person/new" => "people#create"
+  post "/files/token" => "files#create_token"
 
   put "/teams/:id" => "teams#update"
   put "/give_team_manager_permission" => "users#give_team_manager_permission"
