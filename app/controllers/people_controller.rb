@@ -37,24 +37,6 @@ class PeopleController < ApplicationController
     render json: person, status: 200
   end
 
-  def files
-    check_if_user_owns_person_params
-    type = params[:type]
-    person = Person.find(params[:id])
-    if type == 'waiver'
-      binary_data = person.waiver.download
-      send_data binary_data, filename: person.waiver.filename.to_s, type: person.waiver.content_type.to_s, disposition: 'attachment'
-    elsif type == 'photo'
-      binary_data = person.photo.download
-      send_data binary_data, filename: person.photo.filename.to_s, type: person.photo.content_type.to_s, disposition: 'attachment'
-    elsif type == 'gov_id'
-      binary_data = person.gov_id.download
-      send_data binary_data, filename: person.gov_id.filename.to_s, type: person.gov_id.content_type.to_s, disposition: 'attachment'
-    else
-      render json: {error: "Invalid type"}, status: 422
-    end
-  end
-
   private
 
   def person_params

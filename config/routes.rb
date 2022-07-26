@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   get "/user" => "users#show"
   get "/people" => "users#personal_details"
   get "/person/:id" => "people#show"
-  get "/person/:id/files" => "people#files"
+  get "/files/token" => "files#create_token"
+  get "/files/get" => "files#get_file"
 
   post "/teams" => "teams#create"
   post "/login" => "users#login"
