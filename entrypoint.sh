@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Installing dependencies"
+bundle install
+
 echo "Wait for db to be ready before running migrations"
 
 count=0
