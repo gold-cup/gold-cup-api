@@ -24,6 +24,7 @@ RUN apt install curl gcc g++ make && \
         git-core \
         zlib1g-dev \
         build-essential \
+        ruby-dev \
         libssl-dev \
         libreadline-dev \
         libyaml-dev \
@@ -46,6 +47,5 @@ RUN chmod +x ./entrypoint.sh
 ENV PORT=3000
 
 # RUN gem install --local nokogiri-1.13.3-aarch64-linux.gem
-RUN bundle install
 
 ENTRYPOINT [ "./entrypoint.sh" ]
