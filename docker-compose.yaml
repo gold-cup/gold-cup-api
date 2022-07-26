@@ -30,6 +30,7 @@ services:
       - goldcup_db
     volumes:
       - shared_data:/var/shared
+      - ./:/app:rw
     networks:
       - development
     ports:
