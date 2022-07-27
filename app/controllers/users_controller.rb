@@ -44,6 +44,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def request_team_manager_permissions
+    begin
+      user_id_from_token = decode_token(request)["user_id"]
+      user = User.find(user_id_from_token)
+      user.permission = "team_manager"
+      if (user.save)
+        render json: {message: "You have been granted team manager permissions"}, response: 200
+      else
+        render json: {errors: user.errors}, response: 422
+      end
+    rescue JWT::VerificationError
+      render json: {error: 'failed to decode token'}, resposne: 401
+    end
+  end
 
   private
   def user_params

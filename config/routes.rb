@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post "/register" => "users#create"
   post "/person/new" => "people#create"
   post "/files/token" => "files#create_token"
+  post "/user/request_team_manager_permissions" => "users#request_team_manager_permissions"
 
   put "/teams/:id" => "teams#update"
   put "/give_team_manager_permission" => "users#give_team_manager_permission"
