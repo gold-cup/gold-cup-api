@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 2022_07_27_031455) do
     t.integer "points", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id", null: false
-    t.index ["user_id"], name: "index_teams_on_user_id"
+    t.bigint "manager_id", null: false
+    t.index ["manager_id"], name: "index_teams_on_manager_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -92,5 +92,5 @@ ActiveRecord::Schema.define(version: 2022_07_27_031455) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "people", "users"
   add_foreign_key "players", "teams"
-  add_foreign_key "teams", "users"
+  add_foreign_key "teams", "users", column: "manager_id"
 end

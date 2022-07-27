@@ -11,5 +11,5 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validates :permission, inclusion: { in: SCOPES }
   has_many :people
-  has_many :teams
+  has_many :managed_teams, class_name: "Team", foreign_key: "manager_id"
 end
