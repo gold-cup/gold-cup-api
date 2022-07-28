@@ -6,12 +6,12 @@ class PeopleController < ApplicationController
     if (person.save)
       render json: person, status: 201
     else
-      render json: {errors: person.errors}, response: 422
+      return render json: {errors: person.errors}, response: 422
     end
   end
 
   def update
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
     if (person.update(person_params))
       render json: person, status: 200
@@ -21,7 +21,7 @@ class PeopleController < ApplicationController
   end
 
   def destroy
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
     destroyed_person = person.destroy
     if destroyed_person.destroyed?
@@ -32,9 +32,9 @@ class PeopleController < ApplicationController
   end
 
   def show
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
-    render json: person, status: 200
+    return render json: person, status: 200
   end
 
   private
@@ -56,5 +56,13 @@ class PeopleController < ApplicationController
       :gov_id,
       :parent_email
     )
+  end
+
+  def check_if_user_owns_person(request, person_id)
+    user_id = decode_token(request)["user_id"]
+    person = Person.find(person_id)
+    if (person.user_id != user_id)
+      return render json: {error: "You don't have permission to do that"}, status: 401
+    end
   end
 end

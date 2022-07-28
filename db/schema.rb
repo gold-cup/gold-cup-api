@@ -59,14 +59,14 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
     t.index ["user_id"], name: "index_people_on_user_id"
   end
 
-  create_table "players", force: :cascade do |t|
+  create_table "players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "number"
     t.string "position"
     t.bigint "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "division"
-    t.integer "person_id", null: false
+    t.bigint "person_id", null: false
     t.index ["person_id"], name: "index_players_on_person_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end

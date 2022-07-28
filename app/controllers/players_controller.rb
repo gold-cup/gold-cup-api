@@ -2,7 +2,7 @@
 
 class PlayersController < ApplicationController
   def index
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     players = Person.find(params[:id]).players
     responseArr = players.map do |player|
       generate_player_response(player)
@@ -10,14 +10,8 @@ class PlayersController < ApplicationController
     render json: responseArr, status: 200
   end
 
-  def show
-    player = Player.find(params[:id])
-    responseArr = generate_player_response(player)
-    render json: responseArr, status: 200
-  end
-
   def create
-    check_if_user_owns_person(request, params[:person_id])
+    check_if_user_owns_person(request, params[:person_id]) and return
     player = Player.new(player_params)
     if (player.save)
       render json: generate_player_response(player), status: 201
@@ -27,7 +21,7 @@ class PlayersController < ApplicationController
   end
 
   def show
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
     player = person.players.find(params[:player_id])
     response = generate_player_response(player)
@@ -35,7 +29,7 @@ class PlayersController < ApplicationController
   end
 
   def update
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
     player = person.players.find(params[:player_id])
     if (player.update(player_params))
@@ -46,7 +40,7 @@ class PlayersController < ApplicationController
   end
 
   def destroy
-    check_if_user_owns_person(request, params[:id])
+    check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
     player = person.players.find(params[:player_id])
     destroyed_player = player.destroy
