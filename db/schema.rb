@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_25_225012) do
+ActiveRecord::Schema.define(version: 2022_07_28_020909) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -75,6 +75,9 @@ ActiveRecord::Schema.define(version: 2022_07_25_225012) do
     t.integer "points", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "manager_id", null: false
+    t.string "password"
+    t.index ["manager_id"], name: "index_teams_on_manager_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -90,4 +93,5 @@ ActiveRecord::Schema.define(version: 2022_07_25_225012) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "people", "users"
   add_foreign_key "players", "teams"
+  add_foreign_key "teams", "users", column: "manager_id"
 end
