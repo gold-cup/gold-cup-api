@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get "/files/get" => "files#get_file"
   get "/teams" => "user#get_teams"
 
-  post "/teams" => "teams#create"
+  post "/team/new" => "teams#create"
   post "/login" => "users#login"
   post "/register" => "users#create"
   post "/person/new" => "people#create"
@@ -23,4 +23,5 @@ Rails.application.routes.draw do
   put "/person/:id" => "people#update"
 
   delete "/person/:id" => "people#destroy"
+  delete "/team/:id" => "teams#destroy"
 end
