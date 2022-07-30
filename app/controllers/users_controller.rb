@@ -70,6 +70,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def get_all_players
+    user_id = decode_token(request)["user_id"]
+    user = User.find(user_id)
+    players = user.players
+    render json: players, response: 200
+  end
+
   private
   def user_params
     params.permit(:name, :email, :password)
