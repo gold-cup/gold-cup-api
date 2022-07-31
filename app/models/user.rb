@@ -12,4 +12,5 @@ class User < ApplicationRecord
   validates :permission, inclusion: { in: SCOPES }
   has_many :people
   has_many :managed_teams, class_name: "Team", foreign_key: "manager_id"
+  has_many :players, through: :people
 end

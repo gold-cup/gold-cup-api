@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_28_020909) do
+ActiveRecord::Schema.define(version: 2022_07_31_025747) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -40,6 +40,16 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "divisions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.date "min_date"
+    t.date "max_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "female_only"
+  end
+
   create_table "people", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -60,12 +70,14 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
   end
 
   create_table "players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
     t.integer "number"
     t.string "position"
-    t.bigint "team_id", null: false
+    t.bigint "team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "division"
+    t.bigint "person_id", null: false
+    t.index ["person_id"], name: "index_players_on_person_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
@@ -92,6 +104,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_020909) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "people", "users"
+  add_foreign_key "players", "people"
   add_foreign_key "players", "teams"
   add_foreign_key "teams", "users", column: "manager_id"
 end

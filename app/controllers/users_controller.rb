@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def personal_details
+  def index
     begin
       user_id_from_token = decode_token(request)["user_id"]
       user = User.find(user_id_from_token)
@@ -70,6 +70,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def get_all_players
+    user_id = decode_token(request)["user_id"]
+    user = User.find(user_id)
+    players = user.players
+    responseArr = players.map do |player|
+      generate_player_response(player, include_person: "true", include_team: "true")
+    end
+    render json: responseArr, response: 200
+  end
+
+  def get_approved_people
+    user_id = decode_token(request)["user_id"]
+    user = User.find(user_id)
+    players = user.people.filter_by_status("approved")
+    render json: players, response: 200
+  end
+
   private
   def user_params
     params.permit(:name, :email, :password)
@@ -78,17 +95,6 @@ class UsersController < ApplicationController
   def generate_token(user)
     payload = { user_id: user.id }
     token = JWT.encode payload, ENV['APP_SECRET'], 'HS256'
-  end
-
-  def decode_token(request)
-    begin
-      token = request.headers['Authorization'].split(' ').last
-      decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')
-      payload = decoded_token[0]
-      payload
-    rescue JWT::DecodeError
-      puts "Invalid token"
-    end
   end
 
   def filter_response(user)

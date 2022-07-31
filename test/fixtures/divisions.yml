@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  name: MyString
+  min_date: 2022-07-30
+  max_date: 2022-07-30
+
+two:
+  code: MyString
+  name: MyString
+  min_date: 2022-07-30
+  max_date: 2022-07-30
