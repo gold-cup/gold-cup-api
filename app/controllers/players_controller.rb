@@ -5,7 +5,7 @@ class PlayersController < ApplicationController
     check_if_user_owns_person(request, params[:id]) and return
     players = Person.find(params[:id]).players
     responseArr = players.map do |player|
-      generate_player_response(player)
+      generate_player_response(player, include_person: "true", include_team: "true")
     end
     render json: responseArr, status: 200
   end
@@ -14,7 +14,7 @@ class PlayersController < ApplicationController
     check_if_user_owns_person(request, params[:person_id]) and return
     player = Player.new(player_params)
     if (player.save)
-      render json: generate_player_response(player), status: 201
+      render json: generate_player_response(player, include_person: true, include_team: true), status: 201
     else
       render json: {errors: player.errors}, response: 422
     end
@@ -24,7 +24,7 @@ class PlayersController < ApplicationController
     check_if_user_owns_person(request, params[:id]) and return
     person = Person.find(params[:id])
     player = person.players.find(params[:player_id])
-    response = generate_player_response(player)
+    response = generate_player_response(player, include_person: true, include_team: true)
     render json: response, status: 200
   end
 
@@ -33,7 +33,7 @@ class PlayersController < ApplicationController
     person = Person.find(params[:id])
     player = person.players.find(params[:player_id])
     if (player.update(player_params))
-      render json: generate_player_response(player), status: 200
+      render json: generate_player_response(player, include_person: true, include_team: true), status: 200
     else
       render json: {errors: player.errors}, response: 422
     end
@@ -52,10 +52,6 @@ class PlayersController < ApplicationController
   end
 
   private
-
-  def generate_player_response(player)
-    { **player.attributes.except("person_id", "team_id"), team: player.team, person: player.person }
-  end
 
   def player_params
     params.permit(:team_id, :person_id, :number, :position)

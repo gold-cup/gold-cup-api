@@ -10,17 +10,20 @@ class TeamsController < ApplicationController
     check_if_user_manages_team
     team = Team.find(params[:id])
     players = team.players
-    team.players = players
-    render json: { **team.attributes, players: players }, response: 200
+    players_arr = players.map do |player|
+      generate_player_response(player, include_person: "true", include_team: "false")
+    end
+    render json: { **team.attributes, players: players_arr }, response: 200
   end
 
   def create
     token_from_request = request.headers["Authorization"]
     user_id = decode_token(token_from_request)["user_id"]
     team = Team.new(team_params.merge(manager_id: user_id))
-    team_password = generate_token(team.id)
-    team.password = team_password
     if team.save
+      team_password = generate_token(team.id)
+      team.password = team_password
+      team.save
       render json: team, response: 201
     else
       render json: { errors: team.errors }, response: 422
@@ -53,12 +56,34 @@ class TeamsController < ApplicationController
     end
   end
 
+  def get_team_from_token
+    begin
+      password = params[:password]
+      team_id = decode_password(params[:password])
+      puts "team id: ", team_id
+      team = Team.find(team_id)
+      render json: team, response: 200 if team.password == password
+    rescue JWT::VerificationError
+      render json: { error: "failed to validate password" }, response: 401
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "Team not found" }, response: 200
+    end
+  end
+
   private
+
+  def decode_password(token)
+    begin
+      decoded_token = JWT.decode(token, ENV["APP_SECRET"], true, algorithm: "HS256")
+      decoded_token[0]["team_id"]
+    rescue JWT::DecodeError
+      nil
+    end
+  end
 
   def decode_token(token)
     begin
       encoded_token = token
-      puts encoded_token
       if (encoded_token)
         token = encoded_token.split(' ').last
         decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')

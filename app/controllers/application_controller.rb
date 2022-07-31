@@ -25,4 +25,15 @@ class ApplicationController < ActionController::API
       return
     end
   end
+
+  def generate_player_response(player, params)
+    payload = {**player.attributes.except("person_id", "team_id")}
+    if (params[:include_person] == "true")
+      payload["person"] = player.person.attributes
+    end
+    if (params[:include_team] == "true")
+      payload["team"] = player.team.attributes
+    end
+    payload
+  end
 end

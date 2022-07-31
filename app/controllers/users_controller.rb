@@ -74,6 +74,16 @@ class UsersController < ApplicationController
     user_id = decode_token(request)["user_id"]
     user = User.find(user_id)
     players = user.players
+    responseArr = players.map do |player|
+      generate_player_response(player, include_person: "true", include_team: "true")
+    end
+    render json: responseArr, response: 200
+  end
+
+  def get_approved_people
+    user_id = decode_token(request)["user_id"]
+    user = User.find(user_id)
+    players = user.people.filter_by_status("approved")
     render json: players, response: 200
   end
 
