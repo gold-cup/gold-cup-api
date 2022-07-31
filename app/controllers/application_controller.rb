@@ -22,7 +22,6 @@ class ApplicationController < ActionController::API
     person = Person.find(person_id)
     if (person.user_id != user_id)
       render json: {error: "You don't have permission to do that"}, status: 401
-      return
     end
   end
 
