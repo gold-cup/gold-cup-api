@@ -26,4 +26,14 @@ class Person < ApplicationRecord
   validates :status, inclusion: {
     in: STATUSES
   }
+
+  validates :players, length: { minimum: 0, maximum: 2 }
+
+  scope :filter_by_status, -> (status) { where status: status }
+
+  def age
+    dob = birthday
+    now = Date.parse('05-08-2022')
+    now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+  end
 end
