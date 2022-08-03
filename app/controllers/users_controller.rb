@@ -87,6 +87,16 @@ class UsersController < ApplicationController
     render json: players, response: 200
   end
 
+  def get_all_coaches
+    user_id = decode_token(request)["user_id"]
+    user = User.find(user_id)
+    coaches = user.coaches
+    responseArr = coaches.map do |coach|
+      generate_coach_response(coach)
+    end
+    render json: responseArr, response: 200
+  end
+
   private
   def user_params
     params.permit(:name, :email, :password)

@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   get "/teams" => "user#get_teams"
   get "/person/:id/players" => "players#index"
   get "/players" => "users#get_all_players"
+  get "/person/:id/coaches" => "coaches#index"
+  get "/person/:id/coaches/:coach_id" => "coaches#show"
+  get "/coaches" => "users#get_all_coaches"
 
   post "/team/new" => "teams#create"
   post "/login" => "users#login"
@@ -23,13 +26,16 @@ Rails.application.routes.draw do
   post "/user/request_team_manager_permissions" => "users#request_team_manager_permissions"
   post '/players/new' => 'players#create'
   post "team/token" => "teams#get_team_from_token"
+  post "/coaches/new" => "coaches#create"
 
   put "/teams/:id" => "teams#update"
   put "/give_team_manager_permission" => "users#give_team_manager_permission"
   put "/person/:id" => "people#update"
   put "/person/:id/players/:player_id" => "players#update"
+  put "/person/:id/coaches/:coach_id" => "coaches#update"
 
   delete "/person/:id" => "people#destroy"
   delete "/team/:id" => "teams#destroy"
   delete "/player/:player_id" => "players#destroy"
+  delete "/coaches/:coach_id" => "coaches#destroy"
 end

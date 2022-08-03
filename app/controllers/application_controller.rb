@@ -35,4 +35,8 @@ class ApplicationController < ActionController::API
     end
     payload
   end
+
+  def generate_coach_response(coach)
+    { **coach.attributes.except("person_id", "team_id"), team: coach.team, person: coach.person }
+  end
 end

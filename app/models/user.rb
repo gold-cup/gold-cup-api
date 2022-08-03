@@ -13,4 +13,5 @@ class User < ApplicationRecord
   has_many :people
   has_many :managed_teams, class_name: "Team", foreign_key: "manager_id"
   has_many :players, through: :people
+  has_many :coaches, through: :people
 end
