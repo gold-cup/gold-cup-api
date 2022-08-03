@@ -27,7 +27,6 @@ class CoachesController < ApplicationController
   end
 
   def update
-    # byebug
     check_if_user_owns_person(request, params[:id])
     person = Person.find(params[:id])
     coach = person.coaches.find(params[:coach_id])
@@ -38,12 +37,20 @@ class CoachesController < ApplicationController
     end
   end
 
-  private
-  def coach_params
-    params.require(:coach).permit(:team_id, :person_id)
+  def destroy
+    check_if_user_owns_person(request, params[:id]) and return
+    person = Person.find(params[:id])
+    coach = person.coaches.find(params[:coach_id])
+    destroyed_coach = coach.destroy
+    if destroyed_coach.destroyed?
+      render json: {message: "Player removed"}, status: 200
+    else
+      render json: {errors: player.errors}, response: 422
+    end
   end
 
-  def generate_coach_response(coach)
-    { **coach.attributes.except("person_id", "team_id"), team: coach.team, person: coach.person }
+  private
+  def coach_params
+    params.permit(:team_id, :person_id, :certificate)
   end
 end

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "/players" => "users#get_all_players"
   get "/person/:id/coaches" => "coaches#index"
   get "/person/:id/coaches/:coach_id" => "coaches#show"
+  get "/coaches" => "users#get_all_coaches"
 
   post "/team/new" => "teams#create"
   post "/login" => "users#login"
@@ -36,4 +37,5 @@ Rails.application.routes.draw do
   delete "/person/:id" => "people#destroy"
   delete "/team/:id" => "teams#destroy"
   delete "/player/:player_id" => "players#destroy"
+  delete "/coaches/:coach_id" => "coaches#destroy"
 end
