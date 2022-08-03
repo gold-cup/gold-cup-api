@@ -9,9 +9,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-development:
-  # <<: *default
-  # database: db/development.sqlite3
+mysql: &mysql
   adapter: mysql2
   encoding: utf8mb4
   pool: 5
@@ -19,6 +17,10 @@ development:
   host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
   username: <%= ENV.fetch("DATABASE_USERNAME") { "root" } %>
   password: <%= ENV.fetch("DATABASE_PASSWORD") { "password" } %>
+  port: <%= ENV.fetch("DATABASE_PORT") { 3306 }
+
+development:
+  <<: *mysql
 
 
 # Warning: The database defined as "test" will be erased and
@@ -29,5 +31,4 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  <<: *mysql
