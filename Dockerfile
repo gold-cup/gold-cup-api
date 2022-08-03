@@ -1,20 +1,5 @@
 FROM ruby:3.0.3
 
-# RUN apk -U add --no-cache \
-#     build-base \
-#     git \
-#     postgresql-dev postgresql-client \
-#     mariadb-dev mariadb-client \
-#     libxml2-dev \
-#     libxslt-dev \
-#     nodejs \
-#     yarn \
-#     sqlite sqlite-dev \
-#     imagemagick \
-#     tzdata \
-#     less \
-#     && rm -rf /var/cache/apk/*
-
 RUN apt install curl gcc g++ make && \
     curl -sL https://deb.nodesource.com/setup_lts.x | bash - && \
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null && \
@@ -45,7 +30,5 @@ COPY . /app
 RUN chmod +x ./entrypoint.sh
 
 ENV PORT=3000
-
-# RUN gem install --local nokogiri-1.13.3-aarch64-linux.gem
 
 ENTRYPOINT [ "./entrypoint.sh" ]
