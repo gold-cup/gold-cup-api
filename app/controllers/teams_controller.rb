@@ -13,12 +13,16 @@ class TeamsController < ApplicationController
     players_arr = players.map do |player|
       generate_player_response(player, include_person: "true", include_team: "false")
     end
-    render json: { **team.attributes, players: players_arr }, response: 200
+    coaches = team.coaches
+    coaches_arr = coaches.map do |coach|
+      generate_coach_response(coach, include_person: "true", include_team: "false")
+    end
+    render json: { **team.attributes, players: players_arr, coaches: coaches_arr }, response: 200
   end
 
   def create
-    token_from_request = request.headers["Authorization"]
-    user_id = decode_token(token_from_request)["user_id"]
+    auth_header = request.headers["Authorization"]
+    user_id = decode_token(auth_header)["user_id"]
     team = Team.new(team_params.merge(manager_id: user_id))
     if team.save
       team_password = generate_token(team.id)
@@ -81,25 +85,9 @@ class TeamsController < ApplicationController
     end
   end
 
-  def decode_token(token)
-    begin
-      encoded_token = token
-      if (encoded_token)
-        token = encoded_token.split(' ').last
-        decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')
-        payload = decoded_token[0]
-        payload
-      else
-        puts "No token found"
-      end
-    rescue JWT::DecodeError
-      puts "Invalid token"
-    end
-  end
-
   def check_if_user_manages_team
     token_from_request = request.headers["Authorization"]
-    user_id = decode_token(token_from_request)["user_id"]
+    user_id = decode_token(auth_header)["user_id"]
     team = Team.find(params[:id])
     if (team.manager_id != user_id)
       render json: {error: "You don't have permission to do that"}, status: 401

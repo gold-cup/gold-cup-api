@@ -6,9 +6,9 @@ class ApplicationController < ActionController::API
     response.headers['Access-Control-Allow-Origin'] = '*'
   end
 
-  def decode_token(request)
+  def decode_token(header)
     begin
-      token = request.headers['Authorization'].split(' ').last
+      token = header.split(' ').last
       decoded_token = JWT.decode(token, ENV['APP_SECRET'], true, algorithm: 'HS256')
       payload = decoded_token[0]
       payload
@@ -18,7 +18,8 @@ class ApplicationController < ActionController::API
   end
 
   def check_if_user_owns_person(request, person_id)
-    user_id = decode_token(request)["user_id"]
+    auth_header = request.headers["Authorization"]
+    user_id = decode_token(auth_header)["user_id"]
     person = Person.find(person_id)
     if (person.user_id != user_id)
       render json: {error: "You don't have permission to do that"}, status: 401
@@ -37,6 +38,13 @@ class ApplicationController < ActionController::API
   end
 
   def generate_coach_response(coach)
-    { **coach.attributes.except("person_id", "team_id"), team: coach.team, person: coach.person }
+    payload = {**coach.attributes.except("person_id", "team_id")}
+    if (params[:include_person] == "true")
+      payload["person"] = coach.person.attributes
+    end
+    if (params[:include_team] == "true")
+      payload["team"] = coach.team.attributes
+    end
+    payload
   end
 end

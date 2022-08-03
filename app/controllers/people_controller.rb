@@ -1,7 +1,8 @@
 class PeopleController < ApplicationController
   def create
-    token_from_request = request.headers["Authorization"]
-    user_id = decode_token(token_from_request)["user_id"]
+    byebug
+    auth_header = request.headers["Authorization"]
+    user_id = decode_token(auth_header)["user_id"]
     person = Person.new(person_params.merge(user_id: user_id, status: "pending"))
     if (person.save)
       render json: person, status: 201
@@ -11,7 +12,8 @@ class PeopleController < ApplicationController
   end
 
   def update
-    check_if_user_owns_person(request, params[:id]) and return
+    auth_header = request.headers["Authorization"]
+    check_if_user_owns_person(token_from_request, params[:id]) and return
     person = Person.find(params[:id])
     if (person.update(person_params))
       render json: person, status: 200
@@ -21,7 +23,8 @@ class PeopleController < ApplicationController
   end
 
   def destroy
-    check_if_user_owns_person(request, params[:id]) and return
+    auth_header = request.headers["Authorization"]
+    check_if_user_owns_person(token_from_request, params[:id]) and return
     person = Person.find(params[:id])
     destroyed_person = person.destroy
     if destroyed_person.destroyed?
@@ -32,7 +35,8 @@ class PeopleController < ApplicationController
   end
 
   def show
-    check_if_user_owns_person(request, params[:id]) and return
+    auth_header = request.headers["Authorization"]
+    check_if_user_owns_person(token_from_request, params[:id]) and return
     person = Person.find(params[:id])
     return render json: person, status: 200
   end
@@ -58,8 +62,8 @@ class PeopleController < ApplicationController
     )
   end
 
-  def check_if_user_owns_person(request, person_id)
-    user_id = decode_token(request)["user_id"]
+  def check_if_user_owns_person(auth_header, person_id)
+    user_id = decode_token(auth_header)["user_id"]
     person = Person.find(person_id)
     if (person.user_id != user_id)
       return render json: {error: "You don't have permission to do that"}, status: 401
