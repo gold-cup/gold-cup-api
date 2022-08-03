@@ -14,7 +14,8 @@ class UsersController < ApplicationController
 
   def show
     begin
-      user_id_from_token = decode_token(request)["user_id"]
+      auth_header = request.headers["Authorization"]
+      user_id_from_token = decode_token(auth_header)["user_id"]
       user = User.find(user_id_from_token)
       render json: filter_response(user), response: 200
     rescue JWT::VerificationError
@@ -35,7 +36,8 @@ class UsersController < ApplicationController
 
   def index
     begin
-      user_id_from_token = decode_token(request)["user_id"]
+      auth_header = request.headers["Authorization"]
+      user_id_from_token = decode_token(auth_header)["user_id"]
       user = User.find(user_id_from_token)
       personal_details = user.people
       render json: personal_details, response: 200
@@ -46,7 +48,8 @@ class UsersController < ApplicationController
 
   def request_team_manager_permissions
     begin
-      user_id_from_token = decode_token(request)["user_id"]
+      auth_header = request.headers["Authorization"]
+      user_id_from_token = decode_token(auth_header)["user_id"]
       user = User.find(user_id_from_token)
       user.permission = "team_manager"
       if (user.save)
@@ -61,7 +64,8 @@ class UsersController < ApplicationController
 
   def get_teams
     begin
-      user_id_from_token = decode_token(request)["user_id"]
+      auth_header = request.headers["Authorization"]
+      user_id_from_token = decode_token(auth_header)["user_id"]
       user = User.find(user_id_from_token)
       teams = user.teams
       render json: teams, response: 200
@@ -71,7 +75,8 @@ class UsersController < ApplicationController
   end
 
   def get_all_players
-    user_id = decode_token(request)["user_id"]
+    auth_header = request.headers["Authorization"]
+    user_id = decode_token(auth_header)["user_id"]
     user = User.find(user_id)
     players = user.players
     responseArr = players.map do |player|
@@ -81,14 +86,16 @@ class UsersController < ApplicationController
   end
 
   def get_approved_people
-    user_id = decode_token(request)["user_id"]
+    auth_header = request.headers["Authorization"]
+    user_id = decode_token(auth_header)["user_id"]
     user = User.find(user_id)
     players = user.people.filter_by_status("approved")
     render json: players, response: 200
   end
 
   def get_all_coaches
-    user_id = decode_token(request)["user_id"]
+    auth_header = request.headers["Authorization"]
+    user_id = decode_token(auth_header)["user_id"]
     user = User.find(user_id)
     coaches = user.coaches
     responseArr = coaches.map do |coach|
