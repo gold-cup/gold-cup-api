@@ -1,6 +1,5 @@
 class PeopleController < ApplicationController
   def create
-    byebug
     auth_header = request.headers["Authorization"]
     user_id = decode_token(auth_header)["user_id"]
     person = Person.new(person_params.merge(user_id: user_id, status: "pending"))
