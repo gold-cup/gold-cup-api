@@ -29,7 +29,7 @@ do
 done
 
 echo "Running rake commands to initialize db and run migrations"
-rails db:create db:migrate
+rails db:create db:migrate db:seed
 
 echo "Starting application"
 rails server -b 0.0.0.0 -p $PORT
